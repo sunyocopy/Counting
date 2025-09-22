@@ -1,18 +1,18 @@
 from flask import Flask, request, Response
+from flask_cors import CORS  # 1. Import ไลบรารี Flask-Cors
 import cv2
 import numpy as np
 from ultralytics import YOLO
 
 # สร้าง Flask app
 app = Flask(__name__)
+CORS(app)  # 2. เปิดใช้งาน CORS กับแอปพลิเคชันทั้งหมด
 
 # โหลดโมเดล YOLOv8 ของคุณ
 try:
     model = YOLO('best.pt')
 except Exception as e:
     print(f"เกิดข้อผิดพลาดในการโหลดโมเดล: {e}")
-    # ในกรณีนี้ อาจจะจบการทำงานไปเลยถ้าโมเดลคือหัวใจหลัก
-    # แต่เราจะปล่อยให้ API ทำงานต่อ เผื่อการดีบัก
     model = None
 
 @app.route('/predict', methods=['POST'])
